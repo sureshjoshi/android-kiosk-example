@@ -1,12 +1,13 @@
 # android-kiosk-example
 This project is an example of using a recent Android SDK (22) to make a kiosk app.
 
-Explained in detail here: http://www.sureshjoshi.com/mobile/android-ndk-in-android-studio-with-swig/
+Explained in detail here: http://www.sureshjoshi.com/mobile/android-kiosk-mode-without-root/
 
 The dependencies are:
 
 * [Android Studio (1.0+)](https://developer.android.com/tools/studio/index.html)
 * [Gradle Tools (1.0+)](https://developer.android.com/tools/studio/index.html#build-system)
+* [Android API 22](https://developer.android.com/about/versions/android-5.1.html)
 
 License
 -------
