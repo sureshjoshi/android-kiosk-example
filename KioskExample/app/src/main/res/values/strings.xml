@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Kiosk Example</string>
-
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="device_admin_enabled">Device Admin enabled</string>
+    <string name="device_admin_warning">Warning: Device Admin is going to be disabled.</string>
+    <string name="device_admin_disabled">Device Admin disabled</string>
+    <string name="kiosk_mode_enabled">Kiosk Mode enabled</string>
+    <string name="kiosk_mode_disabled">Kiosk Mode disabled</string>
 </resources>
