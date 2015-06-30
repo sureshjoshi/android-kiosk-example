@@ -5,18 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
-/**
- * Created by sureshjoshi on 15-06-28.
- */
 public class AdminReceiver extends DeviceAdminReceiver {
-
-    private void showToast(Context context,String text) {
-        Toast.makeText(context, text, Toast.LENGTH_LONG).show();
-    }
 
     @Override
     public void onEnabled(Context context, Intent intent) {
-        showToast(context, context.getString(R.string.device_admin_enabled));
+        Toast.makeText(context, context.getString(R.string.device_admin_enabled), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -26,17 +19,16 @@ public class AdminReceiver extends DeviceAdminReceiver {
 
     @Override
     public void onDisabled(Context context, Intent intent) {
-        showToast(context, context.getString(R.string.device_admin_disabled));
+        Toast.makeText(context, context.getString(R.string.device_admin_disabled), Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onLockTaskModeEntering(Context context, Intent intent,
-                                       String pkg) {
-        showToast(context, context.getString(R.string.kiosk_mode_enabled));
+    public void onLockTaskModeEntering(Context context, Intent intent, String pkg) {
+        Toast.makeText(context, context.getString(R.string.kiosk_mode_enabled), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onLockTaskModeExiting(Context context, Intent intent) {
-        showToast(context, context.getString(R.string.kiosk_mode_disabled));
+        Toast.makeText(context, context.getString(R.string.kiosk_mode_disabled), Toast.LENGTH_SHORT).show();
     }
 }

@@ -5,4 +5,9 @@
     <string name="device_admin_disabled">Device Admin disabled</string>
     <string name="kiosk_mode_enabled">Kiosk Mode enabled</string>
     <string name="kiosk_mode_disabled">Kiosk Mode disabled</string>
+    <string name="enter_kiosk_mode">Enter Kiosk Mode</string>
+    <string name="exit_kiosk_mode">Exit Kiosk Mode</string>
+    <string name="kiosk_not_permitted">Kiosk Mode not permitted</string>
+    <string name="not_device_admin">This app is not a device admin!</string>
+    <string name="not_device_owner">This app is not the device owner!</string>
 </resources>

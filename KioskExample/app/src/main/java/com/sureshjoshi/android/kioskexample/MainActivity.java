@@ -1,22 +1,36 @@
 package com.sureshjoshi.android.kioskexample;
 
 import android.app.Activity;
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.Button;
+import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 public class MainActivity extends Activity {
 
+    @Bind(R.id.button)
+    public Button mButton;
+
+    @OnClick(R.id.button)
+    public void toggleKioskMode() {
+        enableKioskMode(!mIsKioskEnabled);
+    }
+
     @Bind(R.id.webview)
     public WebView mWebView;
 
-    View mDecorView;
+    private View mDecorView;
+    private DevicePolicyManager mDpm;
+    private boolean mIsKioskEnabled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +38,18 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
+
+        ComponentName deviceAdmin = new ComponentName(this, AdminReceiver.class);
+        mDpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
+        if (!mDpm.isAdminActive(deviceAdmin)) {
+            Toast.makeText(this, getString(R.string.not_device_admin), Toast.LENGTH_SHORT).show();
+        }
+
+        if (mDpm.isDeviceOwnerApp(getPackageName())) {
+            mDpm.setLockTaskPackages(deviceAdmin, new String[]{getPackageName()});
+        } else {
+            Toast.makeText(this, getString(R.string.not_device_owner), Toast.LENGTH_SHORT).show();
+        }
 
         mDecorView = getWindow().getDecorView();
 
@@ -33,9 +59,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-
         hideSystemUI();
-        startLockTask();
     }
 
     // This snippet hides the system bars.
@@ -52,5 +76,23 @@ public class MainActivity extends Activity {
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
-
+    private void enableKioskMode(boolean enabled) {
+        try {
+            if (enabled) {
+                if (mDpm.isLockTaskPermitted(this.getPackageName())) {
+                    startLockTask();
+                    mIsKioskEnabled = true;
+                    mButton.setText(getString(R.string.exit_kiosk_mode));
+                } else {
+                    Toast.makeText(this, getString(R.string.kiosk_not_permitted), Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                stopLockTask();
+                mIsKioskEnabled = false;
+                mButton.setText(getString(R.string.enter_kiosk_mode));
+            }
+        } catch (Exception e) {
+            // TODO: Log and handle appropriately
+        }
+    }
 }
