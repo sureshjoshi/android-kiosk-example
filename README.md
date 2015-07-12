@@ -7,7 +7,7 @@ The dependencies are:
 
 * [Android Studio (1.0+)](https://developer.android.com/tools/studio/index.html)
 * [Gradle Tools (1.0+)](https://developer.android.com/tools/studio/index.html#build-system)
-* [Android API 22](https://developer.android.com/about/versions/android-5.1.html)
+* [Android API 21](https://developer.android.com/about/versions/android-5.0.html)
 
 License
 -------
