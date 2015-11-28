@@ -17,13 +17,19 @@ import butterknife.OnClick;
 
 public class MainActivity extends Activity {
 
-    @Bind(R.id.button)
+    @Bind(R.id.button_toggle_kiosk)
     public Button mButton;
 
-    @OnClick(R.id.button)
+    @OnClick(R.id.button_toggle_kiosk)
     public void toggleKioskMode() {
         enableKioskMode(!mIsKioskEnabled);
     }
+
+    @OnClick(R.id.button_check_update)
+    public void checkForUpdate() {
+
+    }
+
 
     @Bind(R.id.webview)
     public WebView mWebView;
@@ -36,7 +42,6 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         ButterKnife.bind(this);
 
         ComponentName deviceAdmin = new ComponentName(this, AdminReceiver.class);

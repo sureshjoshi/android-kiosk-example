@@ -1,5 +1,10 @@
 apply plugin: 'com.android.application'
 
+// Manifest version information
+def versionMajor = 1
+def versionMinor = 0
+def versionPatch = 0
+
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
@@ -8,8 +13,8 @@ android {
         applicationId "com.sureshjoshi.android.kioskexample"
         minSdkVersion 21
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        versionCode versionMajor * 10000 + versionMinor * 100 + versionPatch
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
     }
     buildTypes {
         release {
