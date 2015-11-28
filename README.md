@@ -1,5 +1,5 @@
 # android-kiosk-example
-This project is an example of using a recent Android SDK (22) to make a kiosk app.
+This project is an example of using a recent Android SDK (21) to make a kiosk app.
 
 Explained in detail here: http://www.sureshjoshi.com/mobile/android-kiosk-mode-without-root/
 
