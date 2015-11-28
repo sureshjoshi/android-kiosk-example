@@ -4,30 +4,74 @@ import android.app.Activity;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.sureshjoshi.android.kioskexample.utils.AppVersion;
+
+import java.io.File;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import timber.log.Timber;
 
 
 public class MainActivity extends Activity {
 
+    private static final File DOWNLOAD_DIRECTORY = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+
     @Bind(R.id.button_toggle_kiosk)
-    public Button mButton;
+    Button mButton;
 
     @OnClick(R.id.button_toggle_kiosk)
-    public void toggleKioskMode() {
+    void toggleKioskMode() {
         enableKioskMode(!mIsKioskEnabled);
     }
 
     @OnClick(R.id.button_check_update)
     public void checkForUpdate() {
+        // Look in downloaded directory, assuming it's called to "kiosk-x.y.z.apk"
+        File files[] = DOWNLOAD_DIRECTORY.listFiles((dir, filename) -> {
+            String lowerFilename = filename.toLowerCase();
+            return lowerFilename.endsWith(".apk") && lowerFilename.contains("kiosk-");
+        });
 
+        if (files == null) {
+            Timber.d("No files in downloads directory");
+            return;
+        }
+
+        String applicationVersion = AppVersion.getApplicationVersion(this);
+
+        // Figure out if the APK is newer than the current one
+        // Base this off of filename convention
+        for (File file : files) {
+            String fileVersion = file.getName().substring(6, 11);
+            Timber.d("Current filename is: " + file.getName() + ", with version: " + fileVersion);
+
+            AppVersion appVersion = new AppVersion(fileVersion);
+            int result = appVersion.compareTo(new AppVersion(AppVersion.getApplicationVersion(this)));
+            if (result >= 1) {
+                Timber.d("Application " + applicationVersion + " is older than " + fileVersion);
+                final Intent installIntent = new Intent(Intent.ACTION_VIEW);
+                installIntent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+                installIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(installIntent);
+                break;
+            } else if (result == 0) {
+                Timber.d("Application " + applicationVersion + " is same as " + fileVersion);
+            } else {
+                Timber.d("Application " + applicationVersion + " is newer than " + fileVersion);
+            }
+        }
     }
 
 
