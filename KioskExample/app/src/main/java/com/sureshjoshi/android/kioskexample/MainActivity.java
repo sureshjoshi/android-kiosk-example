@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
@@ -22,7 +21,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import timber.log.Timber;
-
 
 public class MainActivity extends Activity {
 
@@ -55,21 +53,21 @@ public class MainActivity extends Activity {
         // Base this off of filename convention
         for (File file : files) {
             String fileVersion = file.getName().substring(6, 11);
-            Timber.d("Current filename is: " + file.getName() + ", with version: " + fileVersion);
+            Timber.d("Current filename is: %s, with version: %s", file.getName(), fileVersion);
 
             AppVersion appVersion = new AppVersion(fileVersion);
             int result = appVersion.compareTo(new AppVersion(AppVersion.getApplicationVersion(this)));
             if (result >= 1) {
-                Timber.d("Application " + applicationVersion + " is older than " + fileVersion);
+                Timber.d("Application %s is older than %s", applicationVersion, fileVersion);
                 final Intent installIntent = new Intent(Intent.ACTION_VIEW);
                 installIntent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
                 installIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(installIntent);
                 break;
             } else if (result == 0) {
-                Timber.d("Application " + applicationVersion + " is same as " + fileVersion);
+                Timber.d("Application %s is same as %s", applicationVersion, fileVersion);
             } else {
-                Timber.d("Application " + applicationVersion + " is newer than " + fileVersion);
+                Timber.d("Application %s is newer than %s", applicationVersion, fileVersion);
             }
         }
     }
@@ -91,13 +89,13 @@ public class MainActivity extends Activity {
         ComponentName deviceAdmin = new ComponentName(this, AdminReceiver.class);
         mDpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
         if (!mDpm.isAdminActive(deviceAdmin)) {
-            Toast.makeText(this, getString(R.string.not_device_admin), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.not_device_admin), Toast.LENGTH_SHORT).show();
         }
 
         if (mDpm.isDeviceOwnerApp(getPackageName())) {
             mDpm.setLockTaskPackages(deviceAdmin, new String[]{getPackageName()});
         } else {
-            Toast.makeText(this, getString(R.string.not_device_owner), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.not_device_owner), Toast.LENGTH_SHORT).show();
         }
 
         mDecorView = getWindow().getDecorView();
@@ -133,7 +131,7 @@ public class MainActivity extends Activity {
                     mIsKioskEnabled = true;
                     mButton.setText(getString(R.string.exit_kiosk_mode));
                 } else {
-                    Toast.makeText(this, getString(R.string.kiosk_not_permitted), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.kiosk_not_permitted), Toast.LENGTH_SHORT).show();
                 }
             } else {
                 stopLockTask();

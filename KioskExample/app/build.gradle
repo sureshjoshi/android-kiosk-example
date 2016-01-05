@@ -4,7 +4,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'me.tatarka:gradle-retrolambda:3.2.0'
+        classpath 'me.tatarka:gradle-retrolambda:3.2.4'
     }
 }
 
@@ -14,7 +14,7 @@ apply plugin: 'me.tatarka.retrolambda'
 // Manifest version information
 def versionMajor = 1
 def versionMinor = 1
-def versionPatch = 0
+def versionPatch = 1
 
 android {
     compileSdkVersion 22
